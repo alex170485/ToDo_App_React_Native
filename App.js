@@ -12,7 +12,7 @@ export default function App() {
         {id: '1', title: 'Выучить React Native'},
         {id: '2', title: 'Повтотрить JS'}
     ]);
-    const [todoId, setTodoId] = useState(null)
+    const [todoId, setTodoId] = useState('2')
     const addTodo = (title) => {
         setTodos(prev => [...prev, {
             id: Date.now().toString(),
