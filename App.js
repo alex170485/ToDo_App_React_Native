@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
+import {StyleSheet, Text, View, ScrollView, FlatList, Alert} from 'react-native';
 import {NavBar} from "./src/components/NavBar";
 import {MainScreen} from "./src/screens/MainScreens";
 import {TodoScreen} from "./src/screens/TodoScreen";
@@ -20,27 +20,49 @@ export default function App() {
         }])
     }
     const removeTodo = (id) => {
-        setTodos(prev=> prev.filter(todo => todo.id !==id))
+        const todo = todos.find(el => el.id === id)
+        Alert.alert(
+            "Удаление элемента",
+            `Вы действительно хотите удалить "${todo.title}" ? `,
+            [
+                {
+                    text: "Отмена",
+                    style: "cancel",
+                },
+                {
+                    text: 'Удалить',
+                    style: 'destructive',
+                    onPress: () => {
+                        setTodoId(null)
+                        setTodos(prev => prev.filter(todo => todo.id !== id))
+                    }
+                }
+            ],
+            {cancelable: false}
+        );
     }
     let content = (
-        <MainScreen todos = {todos} addTodo = {addTodo} removeTodo = {removeTodo} openTodo = {(id)=> {
-            setTodoId(id)
-        }}/>
+        <MainScreen todos={todos}
+                    addTodo={addTodo}
+                    removeTodo={removeTodo}
+                    openTodo={(id) => {setTodoId(id)}}/>
     )
-    if(todoId) {
+    if (todoId) {
         const todo = todos.find(el => el.id == todoId)
-        content = <TodoScreen goBack={() => {setTodoId(null)}} todo={todo}/>
+        content = <TodoScreen goBack={() => {
+            setTodoId(null)
+        }} todo={todo} onRemove={removeTodo}/>
     }
 
     return (
-    <View>
-      <NavBar title = {'Todo App'}/>
-        <View style={styles.container}>
-            {content}
-      <StatusBar style="auto" />
+        <View>
+            <NavBar title={'Todo App'}/>
+            <View style={styles.container}>
+                {content}
+                <StatusBar style="auto"/>
+            </View>
         </View>
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
