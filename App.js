@@ -1,17 +1,33 @@
-import {StatusBar} from 'expo-status-bar';
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, ScrollView, FlatList, Alert} from 'react-native';
+
+import React, {useState} from "react";
+import {StyleSheet, View, Alert} from 'react-native';
 import {NavBar} from "./src/components/NavBar";
 import {MainScreen} from "./src/screens/MainScreens";
 import {TodoScreen} from "./src/screens/TodoScreen";
+import * as Font from 'expo-font'
+import AppLoading from 'expo-app-loading';
+import {StatusBar} from "expo-status-bar";
 
+async function loadApplication() {
+    await Font.loadAsync({
+        'roboto-regular': require('./assets/font/Roboto-Regular.ttf'),
+        'roboto-bold' : require('./assets/font/Roboto-Bold.ttf')
+    })
+};
 
 export default function App() {
-
+    const [isReady, setIsReady]=useState(false)
     const [todos, setTodos] = useState([
         {id: '1', title: 'Выучить React Native'},
     ]);
     const [todoId, setTodoId] = useState(null)
+    if (!isReady) {
+        return <AppLoading
+            startAsync = {loadApplication}
+            onError = {err=> console.log(err)}
+            onFinish = {() => {setIsReady(true)}}
+        />
+    }
     const addTodo = (title) => {
         setTodos(prev => [...prev, {
             id: Date.now().toString(),

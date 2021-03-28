@@ -1,6 +1,7 @@
 import React from 'react'
-import {Text, View, StyleSheet} from "react-native";
+import {View, StyleSheet, Text} from "react-native";
 import {THEME} from "../../THEME";
+import {AppTextBold} from "./ui/AppTextBold";
 
 
 export const NavBar = props => {

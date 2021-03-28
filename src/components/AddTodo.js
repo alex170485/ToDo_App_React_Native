@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {View, TextInput, Button, StyleSheet, Alert} from "react-native";
 import {THEME} from "../../THEME";
+import {AntDesign, FontAwesome} from '@expo/vector-icons';
 
 
 export const AddTodo = props => {
@@ -20,10 +21,13 @@ export const AddTodo = props => {
                        onChangeText={setValue}
                        value={value}
                        placeholder={'Введите название таски..'}
-                       autoCorrect = {false}
-                       autoCapitalize = 'none'
+                       autoCorrect={false}
+                       autoCapitalize='none'
             />
-            <Button title='Добавить' onPress={pressHandler}/>
+            <AntDesign.Button onPress={pressHandler} name="plussquareo">
+                Добавить
+            </AntDesign.Button>
+            {/*<Button title='Добавить' onPress={pressHandler}/>*/}
         </View>
     )
 }
@@ -36,7 +40,7 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     input: {
-        width: '70%',
+        width: '60%',
         padding: 10,
         borderStyle: 'solid',
         borderBottomWidth: 2,
