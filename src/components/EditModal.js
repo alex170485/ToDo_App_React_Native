@@ -1,23 +1,33 @@
-import React from 'react'
-import {View, StyleSheet, Button, TextInput, Modal} from 'react-native'
+import React, {useState} from 'react'
+import {View, StyleSheet, Button, TextInput, Modal, Alert} from 'react-native'
 import {THEME} from "../../THEME";
 
 
+export const EditModal = ({visible, onCancel, value, onSave}) => {
+    const [title, setTitle] = useState(value)
 
-export const EditModal = ({visible, onCancel }) => {
+    const saveHandler = () => {
+        if (title.trim().length < 3) {
+            Alert.alert('Ошибка', `Длинна сообщения ${title.trim().length} символов`)
+        } else {
+            onSave(title)
+        }
+    }
 
     return (
-        <Modal visible = {visible} animationType = 'slide' transparent = {false}>
-            <View style = {styles.wrap}>
-                <TextInput style = {styles.input}
-                           placeholder = 'ВВедите название'
-                           autoCapitalize = 'none'
-                           autoCorrect = {false}
+        <Modal visible={visible} animationType='slide' transparent={false}>
+            <View style={styles.wrap}>
+                <TextInput style={styles.input}
+                           placeholder='Введите название'
+                           autoCapitalize='none'
+                           autoCorrect={false}
                            maxLength={64}
+                           value={title}
+                           onChangeText={setTitle}
                 />
-                <View style = {styles.buttons}>
-                <Button title = 'Отменить' onPress = {onCancel} color = {THEME.DANGER_COLOR}/>
-                <Button title = 'Сохранить'/>
+                <View style={styles.buttons}>
+                    <Button title='Отменить' onPress={onCancel} color={THEME.DANGER_COLOR}/>
+                    <Button title='Сохранить' onPress={saveHandler}/>
                 </View>
             </View>
         </Modal>
