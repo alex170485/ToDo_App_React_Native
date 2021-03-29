@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {View, TextInput, Button, StyleSheet, Alert} from "react-native";
+import {View, TextInput, Button, StyleSheet, Alert, Keyboard} from "react-native";
 import {THEME} from "../../THEME";
 import {AntDesign, FontAwesome} from '@expo/vector-icons';
 
@@ -11,6 +11,7 @@ export const AddTodo = props => {
         if (value.trim()) {
             props.onSubmit(value)
             setValue('')
+            Keyboard.dismiss()
         } else {
             Alert.alert('Название таски не может быть пустым')
         }
