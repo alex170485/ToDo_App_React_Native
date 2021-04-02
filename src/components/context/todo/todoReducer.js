@@ -10,13 +10,12 @@ export const todoReducer = (state, action) => {
                 }]
             }
         case REMOVE_TODO:
-            return {...state, todos: state.filter(todo => todo.id !== action.id)}
+            return {...state, todos: state.todos.filter(todo => todo.id !== action.id)}
         case UPDATE_TODO:
             return {
-                ...state, todos: state.map(todo => {
+                ...state, todos: state.todos.map(todo => {
                     if (todo.id === action.id) {
-                        todo.title = action.title
-                    }
+                        todo.title = action.title}
                     return todo
                 })
             }

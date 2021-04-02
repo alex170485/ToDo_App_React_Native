@@ -11,6 +11,7 @@ import {THEME} from "./THEME";
 import {MainLayout} from "./src/MainLayout";
 import {TodoState} from "./src/components/context/todo/todoState";
 import {Text} from "react-native";
+import {ScreenState} from "./src/components/context/screen/ScreenState";
 
 async function loadApplication() {
     await Font.loadAsync({
@@ -32,7 +33,11 @@ export default function App() {
 
 
     return (
-        <TodoState><MainLayout/></TodoState>
+        <ScreenState>
+        <TodoState>
+            <MainLayout/>
+        </TodoState>
+        </ScreenState>
     );
 }
 
