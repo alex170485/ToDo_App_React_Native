@@ -3,7 +3,7 @@ import {TodoContext} from './todoContext'
 import {todoReducer} from "./todoReducer";
 import {
     ADD_TODO,
-    CLEAR_ERROR,
+    CLEAR_ERROR, FETCH_TODOS,
     HIDE_LOADER,
     REMOVE_TODO,
     SHOW_ERROR,
@@ -58,13 +58,27 @@ export const TodoState = ({children}) => {
     const hideLoader = () => dispatch({type: HIDE_LOADER})
     const showError = error => dispatch({type: SHOW_ERROR, error})
     const clearError = () => dispatch({type: CLEAR_ERROR})
+    const fetchTodos = async () => {
+        const response = await fetch('https://react-native-todo-app-3968f-default-rtdb.firebaseio.com/todos.json', {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        const data = await response.json()
+        const todos = Object.keys(data).map(key => ({...data[key], id: key}))
+        console.log('FETCH ', data)
+        dispatch({type: FETCH_TODOS, todos})
+    }
+
 
     return (
         <TodoContext.Provider value={{
             todos: state.todos,
+            loading: state.loading,
+            error: state.error,
             addTodo,
             removeTodo,
-            updateTodo
+            updateTodo,
+            fetchTodos
         }}>
             {children}
         </TodoContext.Provider>
