@@ -53,24 +53,43 @@ export const TodoState = ({children}) => {
         );
 
     }
-    const updateTodo = (id, title) => dispatch({type: UPDATE_TODO, id: id, title: title})
+    const updateTodo = async (id, title) => {
+        clearError()
+        try {
+            await fetch(`https://react-native-todo-app-3968f-default-rtdb.firebaseio.com/todos/${id}.json`, {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(({title}))
+            })
+            dispatch({type: UPDATE_TODO, id: id, title: title})
+        } catch (e) {
+            showError('что то не так')
+            console.log(e)
+        }
+    }
     const showLoader = () => dispatch({type: SHOW_LOADER})
     const hideLoader = () => dispatch({type: HIDE_LOADER})
     const showError = error => dispatch({type: SHOW_ERROR, error})
     const clearError = () => dispatch({type: CLEAR_ERROR})
     const fetchTodos = async () => {
         showLoader()
-        const response = await fetch('https://react-native-todo-app-3968f-default-rtdb.firebaseio.com/todos.json', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'},
-        })
-        const data = await response.json()
-        const todos = Object.keys(data).map(key => ({...data[key], id: key}))
-        console.log('FETCH ', data)
-        dispatch({type: FETCH_TODOS, todos})
-        hideLoader()
+        clearError()
+        try {
+            const response = await fetch('https://react-native-todo-app-3968f-default-rtdb.firebaseio.com/todos.json', {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+            })
+            const data = await response.json()
+            const todos = Object.keys(data).map(key => ({...data[key], id: key}))
+            console.log('FETCH ', data)
+            dispatch({type: FETCH_TODOS, todos})
+        } catch (e) {
+            showError('что то не так')
+            console.log(e)
+        } finally {
+            hideLoader()
+        }
     }
-
 
     return (
         <TodoContext.Provider value={{
