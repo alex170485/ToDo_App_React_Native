@@ -59,14 +59,16 @@ export const TodoState = ({children}) => {
     const showError = error => dispatch({type: SHOW_ERROR, error})
     const clearError = () => dispatch({type: CLEAR_ERROR})
     const fetchTodos = async () => {
+        showLoader()
         const response = await fetch('https://react-native-todo-app-3968f-default-rtdb.firebaseio.com/todos.json', {
             method: 'GET',
-            headers: {'Content-Type': 'application/json'}
+            headers: {'Content-Type': 'application/json'},
         })
         const data = await response.json()
         const todos = Object.keys(data).map(key => ({...data[key], id: key}))
         console.log('FETCH ', data)
         dispatch({type: FETCH_TODOS, todos})
+        hideLoader()
     }
 
 
